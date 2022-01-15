@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 from typing import Optional, Dict
 
 DB_PATH = 'animal.db'
@@ -26,7 +26,10 @@ def run_data(idx):
                    where animal_norm.id={idx}
                    """
     result = load_data(query, DB_PATH)
-    return jsonify(result)
+    if result:
+        return jsonify(result)
+    else:
+        abort(404)
 
 
 if __name__ == '__main__':
